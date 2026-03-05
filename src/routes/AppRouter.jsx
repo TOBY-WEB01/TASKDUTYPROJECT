@@ -3,9 +3,9 @@ import { createBrowserRouter } from 'react-router';
 import Rootlayout from '../layouts/Rootlayout';
 
 import Home from '../pages/Home/Home';
-import Newtask from '../pages/Task/Newtask';
 import EditTask from '../pages/task/EditTask';
 import AllTask from '../pages/Task/Alltask';
+import NewTask from '../pages/task/NewTasks';
 
 
 export default function AppRouter() {
@@ -20,7 +20,7 @@ export default function AppRouter() {
             },
             {
               path: "task/newtask",
-              element: <Newtask />,
+              element: <NewTask />,
             },
             {
               path: "task/alltask",
