@@ -6,6 +6,7 @@ import Home from '../pages/Home/Home';
 import EditTask from '../pages/task/EditTask';
 import AllTask from '../pages/Task/Alltask';
 import NewTask from '../pages/task/NewTasks';
+import AllTasks from '../pages/task/AllTasks';
 
 
 export default function AppRouter() {
@@ -24,7 +25,7 @@ export default function AppRouter() {
             },
             {
               path: "task/alltask",
-              element: <AllTask />,
+              element: <AllTasks />,
             },
             {
               path: "task/edittask",
