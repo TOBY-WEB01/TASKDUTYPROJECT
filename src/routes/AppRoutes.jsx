@@ -6,8 +6,7 @@ import Newtask from "../pages/Task/Newtask";
 import Rootlayout from "../layouts/Rootlayout";
 import EditTask from "../pages/task/EditTask";
 
-
-export default function AppRoutes() {
+export default function approutes() {
   const routes = [
     {
       path: "/",
@@ -29,17 +28,10 @@ export default function AppRoutes() {
           path: "task/edittask",
           element: <EditTask />,
         },
-
-    
       ],
     },
   ];
 
-
-
-
-
-     const router = createBrowserRouter(routes);
-      return <RouterProvider router={router} />;
+  const router = createBrowserRouter(routes);
+  return <RouterProvider router={router} />;
 }
-
