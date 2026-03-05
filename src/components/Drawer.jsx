@@ -30,7 +30,7 @@ export default function Drawer() {
           <div className="menu  bg-white  text-base-content min-h-full w-90 p-4">
          <NavLink to="/">
         <img
-          src="https://task-duty-proj-client.vercel.app/assets/logo-cQYmEuE8.svg"
+          src="/Group 2 (1).png"
           alt=""
         />
       </NavLink>

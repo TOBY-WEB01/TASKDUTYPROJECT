@@ -5,7 +5,7 @@ import { Menu } from "lucide-react";
 export default function Nav() {
   const location = useLocation();
 
-  const isActive = (path) => location.pathname === path;
+
   // const links = [
   //   {
   //     id: 1,
@@ -45,7 +45,7 @@ export default function Nav() {
     <div className="container mx-auto p-4 flex justify-between items-center">
       <NavLink to="/">
         <img
-          src="https://task-duty-proj-client.vercel.app/assets/logo-cQYmEuE8.svg"
+          src="/Group 2 (1).png"
           alt=""
         />
       </NavLink>
@@ -53,22 +53,22 @@ export default function Nav() {
         <div className="hidden md:flex items-center gap-6">
             {isHomePage && (
               <>
-                <Link to="/task/newtask" className="font-semibold ">
+                <Link to="/task/newtask" className="font-medium text-xl">
                   New Task
                 </Link>
-                <Link to="/task/alltask" className="font-semibold ">
+                <Link to="/task/alltask" className="font-medium text-xl">
                   All Tasks
                 </Link>
               </>
             )}
             {isMyTasksPage && (
-              <Link to="/task/newtask" className="font-semibold ">
+              <Link to="/task/newtask" className="font-medium text-xl">
                 New Task
               </Link>
             )}
 
             {isEditOrNewTaskPage && (
-              <Link to="/task/alltask" className="font-semibold ">
+              <Link to="/task/alltask" className="font-medium text-xl">
                 All Task
               </Link>
             )}

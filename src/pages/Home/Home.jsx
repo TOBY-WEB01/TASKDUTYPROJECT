@@ -21,7 +21,7 @@ export default function Home() {
           to="task/alltask"
           className="bg-purple-500   rounded text-white px-4 py-3"
         >
-          Go to my Tasks
+          Go To My Tasks
         </Link>
       </div>
       <div className="flex-1 pt-10 lg:pt-0">
