@@ -1,10 +1,12 @@
 import React from 'react'
 import { createBrowserRouter } from 'react-router';
 import Rootlayout from '../layouts/Rootlayout';
-import Alltask from "../pages/Task/Alltask";
+
 import Home from '../pages/Home/Home';
 import Newtask from '../pages/Task/Newtask';
 import EditTask from '../pages/task/EditTask';
+import AllTask from '../pages/Task/Alltask';
+
 
 export default function AppRouter() {
       const routes = [
@@ -22,7 +24,7 @@ export default function AppRouter() {
             },
             {
               path: "task/alltask",
-              element: <Alltask />,
+              element: <AllTask />,
             },
             {
               path: "task/edittask",

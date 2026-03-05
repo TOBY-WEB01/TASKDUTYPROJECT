@@ -1,7 +1,7 @@
 import { SquarePen } from "lucide-react";
 import { Link } from "react-router";
 
-export default function Mytask() {
+export default function AllTask() {
 
   const scrollToTop = () => {
     window.scrollTo({
