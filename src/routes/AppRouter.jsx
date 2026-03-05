@@ -4,7 +4,6 @@ import Rootlayout from '../layouts/Rootlayout';
 
 import Home from '../pages/Home/Home';
 import EditTask from '../pages/task/EditTask';
-import AllTask from '../pages/Task/Alltask';
 import NewTask from '../pages/task/NewTasks';
 import AllTasks from '../pages/task/AllTasks';
 
