@@ -42,23 +42,28 @@ export default function Drawer() {
             >
               <X className="" />
             </button>
-            {user? (  <div className="flex flex-col mt-10 gap-4 ">
-                {" "}
-                <Link
-                  to="/task/newtask"
-                  className="font-medium text-xl"
-                  onClick={() => setIsOpen(false)}
-                >
-                 New Task
-                </Link>
-                <Link
-                  to="/task/alltask"
-                  className="font-medium text-xl"
-                  onClick={() => setIsOpen(false)}
-                >
-                  All Task
-                </Link>
-                 <div
+            {user? (
+             <><h1 className="mt-6 text-xl  font-semibold capitalize">
+                Hi, {user.fullname}
+              </h1>
+              <hr />
+              <div className="flex flex-col mt-10  gap-4 ">
+                  {" "}
+                  <Link
+                    to="/task/newtask"
+                    className="font-medium text-xl"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    New Task
+                  </Link>
+                  <Link
+                    to="/task/alltask"
+                    className="font-medium text-xl"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    All Task
+                  </Link>
+                  <div
                     className="flex gap-2 items-center mt-100"
                     role="button"
                     aria-label="logout button"
@@ -67,7 +72,7 @@ export default function Drawer() {
                     <LogOut />
                     <span>Logout</span>
                   </div>
-              </div>
+                </div></>
 
             ) :  <div className="flex flex-col mt-10 gap-4 ">
             <Link
