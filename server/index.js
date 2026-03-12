@@ -28,7 +28,7 @@ const httpServer = createServer(app);
 //5 - response is finally sent to the client
 app.use(
   cors({
-    origin: ["http://localhost:6201"], //permits domains specified to talk to server
+    origin: ["http://localhost:6201, taskdutyproject-odah.vercel.app"], //permits domains specified to talk to server
     credentials: true, //allows cookies to be sent to client
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"], //permitted http methods
     optionsSuccessStatus: 200, //default status code
