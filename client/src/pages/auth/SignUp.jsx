@@ -6,10 +6,12 @@ import { validateRegisterUserSchema } from "../../utils/dataSchema";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 import { registerUser } from "../../api/auth";
-import { Loader } from "lucide-react";
+import { Eye, EyeOff, Loader } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 
 export default function SignUp() {
+     const [revealPassword, setRevealPassword] = useState(false);
   const {
     handleSubmit,
     register,
@@ -19,6 +21,11 @@ export default function SignUp() {
   });
   const navigate = useNavigate();
   const { setAccessToken } = useAuth();
+
+   const togglePasswordReveal = (e) => {
+    e.preventDefault();
+    setRevealPassword((prev) => !prev);
+  };
 
   const mutation = useMutation({
     mutationFn: registerUser,
@@ -41,46 +48,66 @@ export default function SignUp() {
 
   return (
     <div className="container px-4 mx-auto">
-      <div className="flex flex-col justify-center items-center pt-20">
+      <div className="flex flex-col justify-center items-center pt-12">
         <div className="">
-          <h1 className="font-bold text-4xl text-center">Register for an account</h1>
-           <h2 className="text-center pb-3 pt-5">
-          Enter Your Information To Create An Account
-        </h2>
+          <h1 className="font-bold text-4xl text-center">
+            Register for an account
+          </h1>
+          <h2 className="text-center pb-3 pt-5">
+            Enter Your Information To Create An Account
+          </h2>
         </div>
         <div className="">
           <form
             onSubmit={handleSubmit(onSubmitForm)}
-            className="fieldset bg-base-200 border-base-300 rounded flex flex-col w-90 md:w-100 justify-between gap-4 border p-4"
+            className="fieldset bg-base-200 border-base-300 rounded flex flex-col w-90 md:w-100 justify-between gap-4  p-4"
           >
-            <input
-              type="name"
-              className="input border p-2 w-full rounded"
-              placeholder="Username"
-              {...register("fullname")}
-            />
-            {errors.fullname && (
-              <p className="text-red-500 text-sm">{errors?.fullname.message}</p>
-            )}
-            <input
-              type="email"
-              className="input border p-2 w-full  rounded"
-              placeholder="Email"
-              {...register("email")}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm">{errors?.email.message}</p>
-            )}
+            <div>
+              <input
+                type="name"
+                className="input border p-2 w-full bg-white  rounded"
+                placeholder="Username"
+                {...register("fullname")}
+              />
+              {errors.fullname && (
+                <p className="text-red-500 text-sm">
+                  {errors?.fullname.message}
+                </p>
+              )}
+            </div>
 
-            <input
-              type="password"
-              className="input border p-2 w-full rounded"
-              placeholder="Password"
-              {...register("password")}
-            />
-            {errors.password && (
-              <p className="text-red-500 text-sm">{errors?.password.message}</p>
-            )}
+            <div>
+              <input
+                type="email"
+                className="input border p-2 w-full bg-white  rounded"
+                placeholder="Email"
+                {...register("email")}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors?.email.message}</p>
+              )}
+            </div>
+
+            <div className="relative">
+              <input
+                type={revealPassword ? "text" : "password"}
+                className="input border w-full bg-white  p-2 rounded "
+                {...register("password")}
+                placeholder="Password"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordReveal}
+                className="absolute  right-3 top-1 translate-y-1 text-gray-600 z-10"
+              >
+                {revealPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+              {errors.password && (
+                <p className="text-red-500 text-sm">
+                  {errors?.password.message}
+                </p>
+              )}
+            </div>
 
             <button
               className="btn btn-neutral text-white bg-purple-600 mt-4 border p-2 rounded"

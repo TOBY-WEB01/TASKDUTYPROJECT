@@ -28,7 +28,7 @@ export default function Nav() {
       </NavLink>
       <div className=" items-center space-x-3 flex justify-between">
          {user ? (
-        <><div className="hidden md:flex items-center  gap-6">
+        <><div className="hidden  md:flex items-center    gap-6">
             {isHomePage && (
               <>
                 <Link to="/task/newtask" className="font-medium text-xl">
