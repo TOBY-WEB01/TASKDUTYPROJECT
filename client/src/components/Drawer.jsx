@@ -1,9 +1,11 @@
-import { Menu, X } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Drawer() {
   const [isOpen, setIsOpen] = useState(false);
+  const {user, handleLogout}=useAuth()
 
   return (
     <>
@@ -40,7 +42,7 @@ export default function Drawer() {
             >
               <X className="" />
             </button>
-              <div className="flex flex-col mt-10 gap-4 ">
+            {user? (  <div className="flex flex-col mt-10 gap-4 ">
                 {" "}
                 <Link
                   to="/task/newtask"
@@ -56,7 +58,36 @@ export default function Drawer() {
                 >
                   All Task
                 </Link>
+                 <div
+                    className="flex gap-2 items-center mt-100"
+                    role="button"
+                    aria-label="logout button"
+                    onClick={handleLogout}
+                  >
+                    <LogOut />
+                    <span>Logout</span>
+                  </div>
               </div>
+
+            ) :  <div className="flex flex-col mt-10 gap-4 ">
+            <Link
+                to="/auth/createAccount"
+                className="  text-2xl  "
+              >
+                Sign Up
+              </Link><Link
+                to="/auth/login"
+                className=" text-2xl "
+              >
+                  Log In
+                </Link>
+                
+                </div>
+
+            }
+
+             
+
           </div>
         </div>
       </div>

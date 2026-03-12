@@ -1,23 +1,15 @@
 import { Link, NavLink, useLocation } from "react-router";
 import Drawer from "./Drawer";
 import { Menu } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
+import UserAvatar from "./UserAvatar";
 
 export default function Nav() {
   const location = useLocation();
+   const {user }    = useAuth();
 
 
-  // const links = [
-  //   {
-  //     id: 1,
-  //        path: "task/alltask",
-  //     name: "All task",
-  //   },
-  //   {
-  //     id: 2,
-  //     path: "/task/newtask",
-  //     name: "New task",
-  //   },
-  // ];
+
 
 
   const isHomePage = location.pathname === "/";
@@ -26,22 +18,7 @@ export default function Nav() {
     location.pathname === "/task/edittask" || location.pathname === "/task/newtask";
 
   return (
-    // <div className="container mx-auto p-4 flex justify-between items-center">
-    //   <NavLink to="/">TaskDuty</NavLink>
-    //   <div className="flex items-center gap-4">
-    //     {links.map((item) => (
-    //       <NavLink
-    //         to={item.path}
-    //         className={({ isActive }) =>
-    //           isActive ? "text-green-500 font-semibold" : ""
-    //         }
-    //       >
-    //         {item.name}
-    //       </NavLink>
-    //     ))}
-
-    //   </div>
-    // </div>
+ 
     <div className="container mx-auto p-4 flex justify-between items-center">
       <NavLink to="/">
         <img
@@ -50,7 +27,8 @@ export default function Nav() {
         />
       </NavLink>
       <div className=" items-center space-x-3 flex justify-between">
-        <div className="hidden md:flex items-center gap-6">
+         {user ? (
+        <><div className="hidden md:flex items-center  gap-6">
             {isHomePage && (
               <>
                 <Link to="/task/newtask" className="font-medium text-xl">
@@ -72,7 +50,23 @@ export default function Nav() {
                 All Task
               </Link>
             )}
-            </div>
+          </div><UserAvatar /></> 
+            ) : (
+              <div className="hidden  md:flex gap-4   md:gap-0  md:space-x-3   ">
+                <Link
+                  to="/auth/createAccount"
+                  className=" border-0 rounded-3xl  md:px-6 md:py-2 "
+                >
+                  Sign Up
+                </Link>
+                <Link
+                  to="/auth/login"
+                  className="  md:px-6 md:py-2"
+                >
+                  Log In
+                </Link>
+              </div>
+            )}
 
         {/* <div className="hidden md:block space-x-6">
           <NavLink
@@ -104,7 +98,7 @@ export default function Nav() {
             {item.name}
           </NavLink>
         ))} */}
-        <img src="/Group 7.png" alt="" className="w-10" />
+        {/* <img src="/Group 7.png" alt="" className="w-10" /> */}
 
         <Drawer />
       </div>

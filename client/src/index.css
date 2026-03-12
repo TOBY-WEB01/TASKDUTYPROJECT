@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Signika+Negative:wght@300;400;500;600;700&display=swap");
+
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: dark --preferswhite;
+}
+
+
+
+body {
+  font-family: 'Signika Negative', sans-serif;
+}
+
+.auth-background {
+  background-image: url("/taskAuthImage.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .auth-layout {
+    background-image: none;
+  }
+}

@@ -1,6 +1,9 @@
 import { Link, NavLink } from "react-router";
 
+
 export default function Home() {
+
+
   return (
     <div className="container  mx-auto p-4 flex flex-col lg:flex-row justify-between items-center mt-5">
       <div className="flex-1 text-center lg:text-start ">
@@ -17,6 +20,7 @@ export default function Home() {
           dolore eum! Ipsam rem laudantium atque ab doloremque saepe quam
           praesentium perferendis voluptates!
         </p>
+      
         <Link
           to="task/alltask"
           className="bg-purple-500   rounded text-white px-4 py-3"
