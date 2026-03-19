@@ -12,6 +12,7 @@ import {
 
 //import api routes
 import userRoutes from "./src/routes/user.routes.js";
+import taskRoutes from "./src/routes/task.routes.js";
 // import bookingRoutes from "./src/routes/booking.routes.js";
 // import paymentRoutes from "./src/routes/payment.routes.js";
 // import adminRoutes from "./src/routes/admin.routes.js";
@@ -28,7 +29,7 @@ const httpServer = createServer(app);
 //5 - response is finally sent to the client
 app.use(
   cors({
-    origin: ["http://localhost:6201", "https://taskdutyproject-odah.vercel.app"], //permits domains specified to talk to server
+    origin: ["http://localhost:6200", "https://taskdutyproject-odah.vercel.app"], //permits domains specified to talk to server
     credentials: true, //allows cookies to be sent to client
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"], //permitted http methods
     optionsSuccessStatus: 200, //default status code
@@ -61,6 +62,8 @@ app.get("/", (req, res) => {
 
 //assemble api routes
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/task", taskRoutes);
+
 // app.use("/api/v1/booking", bookingRoutes);
 // app.use("/api/v1/payment", paymentRoutes);
 // app.use("/api/v1/admin", adminRoutes);

@@ -1,70 +1,137 @@
-import { ChevronDown, ChevronLeft } from 'lucide-react'
-import React from 'react'
-import { Link } from 'react-router'
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ChevronLeft, Loader } from "lucide-react";
+import { Link, useNavigate, useParams } from "react-router";
+import { getSingleTask, updateTask } from "../../api/task";
+import { toast } from "react-toastify";
+import { useAuth } from "../../hooks/useAuth";
+import { validateTaskSchema } from "../../utils/dataSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 export default function EditTask() {
+  const { id } = useParams();
+  const { accessToken } = useAuth();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const { handleSubmit, register, setValue, watch, reset } = useForm({
+    resolver: zodResolver(validateTaskSchema),
+  });
+
+  const currentTag = watch("tags");
+
+  // 1. Fetch existing task data
+  const { data: apiResponse, isLoading } = useQuery({
+    queryKey: ["task", id],
+    queryFn: () => getSingleTask({ id, accessToken }),
+    enabled: !!accessToken && !!id,
+  });
+
+  // 2. Fill form when data is loaded
+  useEffect(() => {
+    if (apiResponse?.data?.task) {
+      reset(apiResponse.data.task);
+    }
+  }, [apiResponse, reset]);
+
+  const mutation = useMutation({
+    mutationFn: (data) => updateTask({ id, taskData: data, accessToken }),
+    onSuccess: () => {
+      toast.success("Task updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      navigate("/task/allTask");
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.message || "Failed to update task");
+    },
+  });
+
+  const onSubmitForm = (data) => {
+    if (!id) return toast.error("Task ID is missing");
+    mutation.mutate(data);
+  };
+
+  if (isLoading)
+    return (
+      <div className="flex justify-center py-20">
+        <Loader className="animate-spin" />
+      </div>
+    );
+
   return (
-  <div className="container px-4 mx-auto w-full">
-      <div className="flex items-center gap-1 my-6 md:my-10 ">
-        <Link to="/task/alltask">
+    <div className="container px-4 mx-auto w-full">
+      <div className="flex items-center gap-1 my-6 md:my-10">
+        <Link to="/task/allTask">
           <ChevronLeft />
         </Link>
-
-        <Link to="/task/alltask" className="text-2xl font-semibold">Edit Task</Link>
+        <h1 className="text-2xl font-semibold">Edit Task</h1>
       </div>
 
-      <form className=" pt-5 flex flex-col gap-6 w-full">
-        <div className="flex flex-col relative border  border-gray-200">
-          <label
-            htmlFor=""
-            className="text-lg absolute -top-3 left-7 bg-white font-medium text-gray-500"
-          >
+      <form
+        onSubmit={handleSubmit(onSubmitForm)}
+        className="flex flex-col gap-8 w-full"
+      >
+        {/* Title */}
+        <div className="relative border border-gray-200 rounded">
+          <label className="text-sm absolute -top-3 left-4 bg-white px-2 font-medium text-gray-500">
             Task Title
           </label>
           <input
             type="text"
-            placeholder="E.g Project Defense, Assignment ..."
-            className=" py-4 px-2 outline-none w-full pl-7"
-            defaultValue="Project Completion"
+            className="py-4 px-4 outline-none w-full"
+            {...register("title")}
           />
         </div>
-        <div className="mt-6 relative border border-gray-200 ">
-          <label
-            htmlFor=""
-            className="text-lg font-medium  absolute -top-3 left-7 bg-white  text-gray-500"
-          >
+
+        {/* Description */}
+        <div className="relative border border-gray-200 rounded">
+          <label className="text-sm absolute -top-3 left-4 bg-white px-2 font-medium text-gray-500">
             Description
           </label>
           <textarea
-            name=""
-            id=""
-            placeholder="Briefly describe your task..."
-            className="outline-none resize-none w-full pl-7 pt-5"
+            className="outline-none resize-none w-full px-4 pt-5"
             rows={5}
-            defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra sit in aliquam pretium. Diam consectetur at tincidunt sed non tempus faucibus posuere eu. Nisi, luctus turpis pharetra quis nunc nulla. At lectus faucibus mattis ante eleifend ac arcu. Nibh morbi adipiscing leo tempus non dolor viverra cras. Sapien in nulla cum fermentum auctor lectus orci. Felis tincidunt lacus, fermentum laoreet sit sit. Lacus, orci pretium, etiam justo lacus. Amet, ultrices eget auctor euismod vitae diam."
-          ></textarea>
+            {...register("description")}
+          />
         </div>
-        <div className="mt-10 relative">
-        <fieldset className="border mb-4 border-gray-200 rounded w-full">
-          <legend className="ml-5 text-lg text-gray-500">Tags</legend>
-          <div className="flex items-center justify-between h-8 mt-2 mb-4 px-5">
-            <div className="flex items-center gap-4 ">
-              <span className="bg-gray-500 text-white rounded px-4 py-1 text-xs cursor-pointer">
-                Urgent
-              </span>
-              <span className="bg-gray-500 text-white  rounded px-4 py-1 text-xs cursor-pointer">
-                Important
-              </span>
-            </div>
-            <ChevronDown size={30} className="cursor-pointer text-(--tags-color)"/>
+
+        {/*  TAG SELECTOR */}
+        <div className="relative border border-gray-200 rounded p-4">
+          <label className="text-sm absolute -top-3 left-4 bg-white px-2 font-medium text-gray-500">
+            Tags
+          </label>
+          <div className="flex gap-3 mt-2">
+            {["Urgent", "Important"].map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => setValue("tags", tag)}
+                className={`flex-1 py-3 rounded font-bold transition-all ${
+                  currentTag === tag
+                    ? "bg-purple-500 text-white"
+                    : "bg-gray-100 text-gray-400 hover:bg-gray-200"
+                }`}
+              >
+                {tag}
+              </button>
+            ))}
           </div>
-        </fieldset>
-      </div>
+          <input type="hidden" {...register("tags")} />
+        </div>
+
+        <button
+          type="submit"
+          disabled={mutation.isPending}
+          className="bg-purple-500 text-white w-full rounded py-4 font-bold text-lg flex justify-center items-center"
+        >
+          {mutation.isPending ? (
+            <Loader className="animate-spin" />
+          ) : (
+            "Save Changes"
+          )}
+        </button>
       </form>
-      <button className="bg-purple-500 mt-7 text-white w-full rounded py-3">
-        Done
-      </button>
-    
     </div>
-  )
+  );
 }

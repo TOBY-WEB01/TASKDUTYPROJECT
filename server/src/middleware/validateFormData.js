@@ -12,9 +12,9 @@ export const validateFormData = (schema) => (req, res, next) => {
         message: ` ${issue.message} `,
       }));
       return res.status(400).json({
-        error:"Error validating form data",
-      details:errorMsg,
-      })
+        error: "Error validating form data",
+        details: errorMsg,
+      });
     }
     next(error);
   }

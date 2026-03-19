@@ -4,6 +4,7 @@ import {
   loginUser,
   logoutUser,
   getUser,
+  refreshAccessToken,
 } from "../controller/user.controller.js";
 import { rateLimiter } from "../middleware/rateLimit.js";
 import { validateFormData } from "../middleware/validateFormData.js";
@@ -30,5 +31,7 @@ router.post(
 router.post("/logout", authenticate, logoutUser);
 
 router.get("/get", authenticate, getUser);
+
+router.post("/refresh-token", refreshAccessToken);
 
 export default router;

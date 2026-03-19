@@ -104,3 +104,40 @@ export const getUser = async (req, res, next) => {
     next(error);
   }
 };
+
+ export const refreshAccessToken = async (req, res, next) => {
+  try {
+  
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+      return next(responseHandler.unauthorizedResponse("Session expired, please login again"));
+    }
+
+    // 2. Verify the refresh token
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_TOKEN_SECRET_KEY);
+
+    // 3. Find the user
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      return next(responseHandler.notFoundResponse("User not found"));
+    }
+
+    // 4. Generate new tokens using your existing sendToken utility
+    const { accessToken, refreshToken: newRefreshToken, cookieOptions } = sendToken(user);
+
+    // 5. Update the cookie with the new refresh token
+    res.cookie("refreshToken", newRefreshToken, cookieOptions);
+
+    // 6. Return the new access token to the frontend
+    return responseHandler.successResponse(
+      res, 
+      accessToken, // This goes back to your AuthProvider.jsx
+      "Token refreshed successfully", 
+      200
+    );
+  } catch (error) {
+    // If the refresh token itself is expired or invalid
+    return next(responseHandler.unauthorizedResponse("Invalid refresh token"));
+  }
+};

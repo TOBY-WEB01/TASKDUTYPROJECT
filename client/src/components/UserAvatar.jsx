@@ -24,7 +24,7 @@ const {user, handleLogout}=useAuth()
                 )}
               </div>
             </div>
-            <div className="hidden  md:block dropdown dropdown-end ">
+            <div className="hidden  md:block  dropdown dropdown-end ">
               <div
                 tabIndex={0}
                 role="button"
@@ -34,7 +34,7 @@ const {user, handleLogout}=useAuth()
               </div>
               <ul
                 tabIndex="-1"
-                className="dropdown-content menu bg-(--darkgrey) rounded-box z-1 w-52 p-2 shadow-sm  "
+                className="dropdown-content menu bg- rounded-box z-1 w-52 p-2 shadow-sm  "
               >
               
                 {user?.role === "admin" && (

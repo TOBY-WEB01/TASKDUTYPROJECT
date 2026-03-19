@@ -62,7 +62,7 @@ export default function AppRouter() {
           ),
         },
         {
-          path: "task/edittask",
+          path: "/task/edit/:id",
           element: <EditTask />,
         },
       ],
