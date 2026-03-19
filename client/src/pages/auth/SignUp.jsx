@@ -42,7 +42,6 @@ export default function SignUp() {
   });
 
   const onSubmitForm = async (data) => {
-    console.log("SUBMIT DATA", data);
     mutation.mutate(data);
   };
 

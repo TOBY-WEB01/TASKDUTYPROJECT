@@ -45,7 +45,6 @@ export default function Login() {
   });
 
   const onSubmitForm = async (data) => {
-    console.log("SUBMIT DATA", data);
     mutation.mutate(data);
   };
   return (

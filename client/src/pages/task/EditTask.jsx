@@ -15,7 +15,7 @@ export default function EditTask() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { handleSubmit, register, setValue, watch, reset } = useForm({
+  const { handleSubmit, register, setValue, watch, reset,  formState: { errors }, } = useForm({
     resolver: zodResolver(validateTaskSchema),
   });
 
@@ -72,7 +72,7 @@ export default function EditTask() {
         onSubmit={handleSubmit(onSubmitForm)}
         className="flex flex-col gap-8 w-full"
       >
-        {/* Title */}
+  
         <div className="relative border border-gray-200 rounded">
           <label className="text-sm absolute -top-3 left-4 bg-white px-2 font-medium text-gray-500">
             Task Title
@@ -82,9 +82,14 @@ export default function EditTask() {
             className="py-4 px-4 outline-none w-full"
             {...register("title")}
           />
+           {errors.title && (
+            <span className="text-red-500 text-xs pl-4">
+              {errors.title.message}
+            </span>
+          )}
         </div>
 
-        {/* Description */}
+     
         <div className="relative border border-gray-200 rounded">
           <label className="text-sm absolute -top-3 left-4 bg-white px-2 font-medium text-gray-500">
             Description
@@ -94,9 +99,14 @@ export default function EditTask() {
             rows={5}
             {...register("description")}
           />
+          {errors.description && (
+            <span className="text-red-500 text-xs pl-4">
+              {errors.description.message}
+            </span>
+          )}
         </div>
 
-        {/*  TAG SELECTOR */}
+      
         <div className="relative border border-gray-200 rounded p-4">
           <label className="text-sm absolute -top-3 left-4 bg-white px-2 font-medium text-gray-500">
             Tags

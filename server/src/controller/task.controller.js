@@ -46,26 +46,31 @@ export const getTask = async (req, res, next) => {
 
 
 export const deleteTask = async (req, res, next) => {
-  const { id } = req.params; // Grabs the ID from the URL /task/delete/:id
-  const userId = req.user.id; // Ensure the user owns the task they are deleting
+  const { id } = req.params; 
+  const userId = req.user.id; 
+
   try {
-    // 1. Find and delete the task, but ONLY if it belongs to the logged-in user
+    // 1. Find and delete, ensuring the user owns the task
     const task = await Task.findOneAndDelete({
       _id: id,
       userId: userId,
     });
-    // 2. If no task was found (maybe wrong ID or unauthorized)
+
+    
     if (!task) {
-      return res.status(404).json({
-        success: false,
-        message: "Task not found or unauthorized",
-      });
+      return next(
+        responseHandler.notFoundResponse("Task not found or unauthorized")
+      );
     }
-    // 3. Return success using your existing response handler
-    return responseHandler.successResponse(res, {
-      message: "Task deleted successfully",
-    });
+
+  
+    return responseHandler.successResponse(
+      res, 
+      null, 
+      "Task deleted successfully"
+    );
   } catch (error) {
+   
     next(error);
   }
 };
@@ -73,7 +78,7 @@ export const deleteTask = async (req, res, next) => {
 
 
 
-// GET A SINGLE TASK (To fill the Edit Form)
+
 export const getSingleTask = async (req, res, next) => {
   const { id } = req.params;
   const userId = req.user.id;
@@ -82,7 +87,10 @@ export const getSingleTask = async (req, res, next) => {
     const task = await Task.findOne({ _id: id, userId: userId });
 
     if (!task) {
-      return res.status(404).json({ success: false, message: "Task not found" });
+    
+      return next(
+        responseHandler.notFoundResponse("Task not found or unauthorized")
+      );
     }
 
     return responseHandler.successResponse(res, { task });
@@ -91,13 +99,12 @@ export const getSingleTask = async (req, res, next) => {
   }
 };
 
-// UPDATE THE TASK
+
 export const updateTask = async (req, res, next) => {
   const { id } = req.params;
   const userId = req.user.id;
 
   try {
-    // findOneAndUpdate handles the "Find" and "Update" in one command
     const updatedTask = await Task.findOneAndUpdate(
       { _id: id, userId: userId }, 
       { $set: req.body },         
@@ -105,10 +112,12 @@ export const updateTask = async (req, res, next) => {
     );
 
     if (!updatedTask) {
-      return res.status(404).json({ success: false, message: "Task not found or unauthorized" });
+     
+      return next(responseHandler.notFoundResponse("Task not found or unauthorized"));
     }
 
-    return responseHandler.successResponse(res, { task: updatedTask });
+  
+    return responseHandler.successResponse(res, { task: updatedTask }, "Task updated successfully");
   } catch (error) {
     next(error);
   }
